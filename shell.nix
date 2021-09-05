@@ -10,10 +10,5 @@ pkgs.mkShell {
     latest.rustChannels.nightly.rust-src
     rustfmt
     rust-analyzer
-
-    openssl
-    clang
-    gcc
-    pkgconfig
   ];
 }
