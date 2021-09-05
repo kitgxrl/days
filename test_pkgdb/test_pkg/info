@@ -1,0 +1,4 @@
+desc = a simple test package
+version = 0.0.1
+author = some person <example@example.com>
+maintainer = some person <example@example.com>

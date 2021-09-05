@@ -6,6 +6,19 @@ Reasoning
 ---------
 > TODO
 
+Package Structure
+-----------------
+> NOTE: This is a work in progress structure and can change at any time
+> A one file solution, similar to portage's ebuilds, is being considered
+```
+test_pkgdb/
+└── test_pkg
+    ├── build
+    ├── deps
+    ├── flags
+    └── info
+```
+
 Installation
 ------------
 > TODO
