@@ -8,7 +8,7 @@ Reasoning
 
 Package Structure
 -----------------
-> NOTE: This is a work in progress structure and can change at any time
+> NOTE: This is a work in progress structure and can change at any time<br>
 > A one file solution, similar to portage's ebuilds, is being considered
 ```
 test_pkgdb/
