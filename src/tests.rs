@@ -18,7 +18,9 @@ pub fn parsed_index() -> Result<(), StoreError> {
 
     let index = Index::from(store);
 
-    // println!("{:#?}", index.entries);
-
     Ok(())
+}
+
+pub fn log_in_lib() {
+    debug!("hi")
 }

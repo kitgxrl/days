@@ -32,6 +32,7 @@ impl<'a> Index<'a> {
 
         file.read_to_string(&mut contents).unwrap();
 
+        let mut line_number = 1;
         for line in contents.lines() {
             let replaced = line.replace('/', " ");
             let mut split = replaced.split(' ');
@@ -43,7 +44,10 @@ impl<'a> Index<'a> {
             let (name, category, version) =
                 match (possible_name, possible_category, possible_version) {
                     (Some(n), Some(c), Some(v)) => (n.to_string(), c.to_string(), v.to_string()),
-                    _ => continue, // FIXME: This needs some type of warning, even if it should never happen..
+                    _ => {
+                        debug!("Line Number `{}` in the `pkgs.cnt` is invalid", line_number);
+                        continue;
+                    }
                 };
 
             entries.push(IndexEntry {
@@ -51,6 +55,7 @@ impl<'a> Index<'a> {
                 category,
                 version,
             });
+            line_number += 1;
         }
 
         entries

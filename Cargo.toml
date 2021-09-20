@@ -7,3 +7,6 @@ repository = "https://github.com/kitgxrl/days"
 edition = "2021"
 
 [dependencies]
+env_logger = "*"
+log = "*"
+clap = "*"
