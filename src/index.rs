@@ -1,7 +1,10 @@
 use crate::store::Store;
+use lazy_static::lazy_static;
+use regex::Regex;
 use std::fmt::Display;
 use std::fs::File;
 use std::io::Read;
+use std::slice::SliceIndex;
 
 pub struct Index<'a> {
     store: Store<'a>,
@@ -15,6 +18,10 @@ pub struct IndexEntry {
     pub version: String,
 }
 
+lazy_static! {
+    static ref SPLIT_REGEX: Regex = Regex::new(r"[\/\ ]").unwrap();
+}
+
 impl<'a> Index<'a> {
     pub fn from(store: Store<'a>) -> Self {
         let entries = Index::parse(&store);
@@ -23,41 +30,37 @@ impl<'a> Index<'a> {
     }
 
     fn parse(store: &Store) -> Vec<IndexEntry> {
-        let mut entries = Vec::new();
-
         let index = store.directory.join("pkgs.cnt");
-        println!("{:#?}", index);
+
+        // Let's read the file first
+
         let mut file = File::open(index).expect("Failed to open index");
         let mut contents = String::new();
 
         file.read_to_string(&mut contents).unwrap();
 
-        let mut line_number = 1;
-        for line in contents.lines() {
-            let replaced = line.replace('/', " ");
-            let mut split = replaced.split(' ');
+        // Convert a given line to an IndexEntry
 
-            let possible_name = split.next();
-            let possible_category = split.next();
-            let possible_version = split.next();
-
-            let (name, category, version) =
-                match (possible_name, possible_category, possible_version) {
-                    (Some(n), Some(c), Some(v)) => (n.to_string(), c.to_string(), v.to_string()),
-                    _ => {
-                        debug!("Line Number `{}` in the `pkgs.cnt` is invalid", line_number);
-                        continue;
-                    }
-                };
-
-            entries.push(IndexEntry {
-                name,
-                category,
-                version,
-            });
-            line_number += 1;
-        }
+        let entries: Vec<IndexEntry> = contents.lines().map(Index::parse_line).collect();
 
         entries
+    }
+
+    fn parse_line(line: &str) -> IndexEntry {
+        let split: Vec<&str> = SPLIT_REGEX.split(&line).collect();
+
+        let name = split.get(1);
+        let category = split.get(0);
+        let version = split.get(2);
+
+        if let (Some(n), Some(c), Some(v)) = (name, category, version) {
+            IndexEntry {
+                name: n.to_string(),
+                category: c.to_string(),
+                version: v.to_string(),
+            }
+        } else {
+            panic!("Failed to parse index")
+        }
     }
 }
