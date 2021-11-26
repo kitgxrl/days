@@ -1,0 +1,21 @@
+NAME="test-pkg"
+VER="1.0.0"
+FLAGS="test-flag test-flag2"
+BDEPS="build-dep"
+RDEPS="runtime-dep"
+
+pre() {
+    # TODO: Write setup
+}
+
+build() {
+    # TODO: Write build
+}
+
+install() {
+    # TODO: Write install
+}
+
+post() {
+    # TODO: Write post-install
+}
