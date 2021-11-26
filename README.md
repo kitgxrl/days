@@ -12,11 +12,9 @@ Package Structure
 > A one file solution, similar to portage's ebuilds, is being considered
 ```
 test_pkgdb/
-└── test_pkg
-    ├── build
-    ├── deps
-    ├── flags
-    └── info
+├── pkgs.cnt
+└── test_cat
+    └── test_pkg.night
 ```
 
 Installation
