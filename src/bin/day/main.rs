@@ -1,5 +1,3 @@
-mod search;
-
 #[macro_use]
 extern crate log;
 
